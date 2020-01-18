@@ -34,7 +34,9 @@ image_path, x1, y1, x2, y2, class_id
 path/to/img2.jpg. 120,300,250,600,2
 
 ```
+# detail and logic
 
-<b>reference site</b>
+Its detail and logic are written bellow site
 
-・https://github.com/tanakataiki/keras-yolo3
+
+
