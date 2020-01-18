@@ -18,7 +18,6 @@ NUM_RPOCH = 100
 batch_size = 20
 DARKNET_WEIGHT_PATH = 'drive/My Drive/yolov3.h5'
 annotation_path = '/content/drive/My Drive/dic_images.txt'
-log_dir = 'drive/My Drive/'
 classes_path = 'classes_txt/original_classes.txt'
 anchors_path = 'yolo_anchors/yolo_anchors.txt'
 lod_dir = 'logs'
