@@ -38,5 +38,6 @@ path/to/img2.jpg. 120,300,250,600,2
 
 Its detail and logic are written bellow site
 
+http://trafalbad.hatenadiary.jp/entry/2020/01/18/170842
 
 
