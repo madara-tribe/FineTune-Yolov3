@@ -1,13 +1,13 @@
-# yolov3_for_FineTuning's performance
+# FineTuning yolo model's performance
 
-# Morning and day
+# light image prediction(Morning and day)
 
 ![predict_2](https://user-images.githubusercontent.com/48679574/72659606-c1ddaf80-3a05-11ea-9a17-cee7adba2363.png)
 
 ![predict_3](https://user-images.githubusercontent.com/48679574/72659607-c2764600-3a05-11ea-851a-328bb7220df4.png)
 
 
-# Night
+# Dark image prediction（Night）
 ![predict_1](https://user-images.githubusercontent.com/48679574/72659622-ed609a00-3a05-11ea-87f7-ba317c34d56b.png)
 
 ![predict_4](https://user-images.githubusercontent.com/48679574/72659623-ee91c700-3a05-11ea-9d5f-a84ecaab2726.png)
