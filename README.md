@@ -1,4 +1,4 @@
-# FineTuning yolo model's performance
+# FineTuning yolov3 model's performance
 
 # light image prediction（Morning and day）
 
