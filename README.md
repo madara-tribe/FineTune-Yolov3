@@ -15,14 +15,16 @@
 # How to fine tune
 ```
 1. Download YOLOv3 weights from yolo website
+$ cd weight
 $ wget https://pjreddie.com/media/files/yolov3.weights
 
-2. python convert.py yolov3.cfg yolov3.weights weight/yolo.h5
+2. python convert.py yolov3.cfg yolov3.weights yolo.h5
 
 3. Instead darknet53.weights, use yolo.h5 for train
 DARKNET_WEIGHT_PATH = 'yolo.h5' (yolov3_train.py)
 ```
 
+To use 
 # data format
 Row format: ```image_file_path, x_min,y_min,x_max,y_max,class_id```
 
@@ -32,3 +34,6 @@ image_path, x1, y1, x2, y2, class_id
 path/to/img2.jpg. 120,300,250,600,2
 
 ```
+
+reference　site
+・https://github.com/tanakataiki/keras-yolo3
