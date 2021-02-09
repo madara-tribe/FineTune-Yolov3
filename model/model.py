@@ -12,7 +12,7 @@ from keras.layers.normalization import BatchNormalization
 from keras.models import Model
 from keras.regularizers import l2
 import tensorflow as tf
-from utils import compose
+from model.utils import compose
 
 
 @wraps(Conv2D)
