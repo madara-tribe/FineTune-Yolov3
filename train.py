@@ -1,13 +1,11 @@
-from google.colab import drive
-drive.mount('/content/drive')
-
+import argparse
 import numpy as np
 import os
 import keras.backend as K
 from keras.layers import Input, Lambda
 from keras.models import Model
 from keras.optimizers import Adam, SGD
-from keras.callbacks import TensorBoard, ModelCheckpoint, ReduceLROnPlateau, EarlyStopping
+from keras.callbacks import *
 from model.model import preprocess_true_boxes, yolo_body, tiny_yolo_body, yolo_loss
 from model.utils import get_random_data
 from callbacks.triangular3 import Triangular3Scheduler
@@ -16,12 +14,22 @@ from callbacks.lr_finder import LRFinder
 
 NUM_RPOCH = 100
 batch_size = 20
-DARKNET_WEIGHT_PATH = 'drive/My Drive/yolov3.h5'
-annotation_path = '/content/drive/My Drive/dic_images.txt'
-classes_path = 'classes_txt/original_classes.txt'
-anchors_path = 'yolo_anchors/yolo_anchors.txt'
-lod_dir = 'logs'
+DARKNET_WEIGHT_PATH = 'weight/yolo.h5'
 
+
+def get_argparser():
+    parser = argparse.ArgumentParser()
+
+    # Datset Options
+    parser.add_argument("--annotation_path", type=str, default='classes_txt/yolov3_voc.txt',
+                        help="annotation path")
+    parser.add_argument("--classes_path", type=str, default='classes_txt/classes.txt',
+                        help='classes path')
+    parser.add_argument("--anchors_path", type=str, default='yolo_anchors/yolo_anchors.txt',
+                        help='anchors path')
+    parser.add_argument("--lod_dir", type=str, default='logs',
+                        help='lod dir')
+    return parser
 
 def get_classes(classes_path):
     '''loads the classes'''
@@ -124,13 +132,15 @@ def data_generator_wrapper(annotation_lines, batch_size, input_shape, anchors, n
 
 
 def train():
-    if not os.path.exists(lod_dir):
-        os.makedirs(lod_dir)
+    opts = get_argparser().parse_args()
+    log_dir = opts.lod_dir
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
 
 
-    class_names = get_classes(classes_path)
+    class_names = get_classes(opts.classes_path)
     num_classes = len(class_names)
-    anchors = get_anchors(anchors_path)
+    anchors = get_anchors(opts.anchors_path)
 
     input_shape = (416,416) # multiple of 32, hw
     is_tiny_version = len(anchors)==6 # default setting
@@ -145,7 +155,7 @@ def train():
     model.summary()
 
     val_split = 0.1
-    with open(annotation_path) as f:
+    with open(opts.annotation_path) as f:
         lines = f.readlines()
 
     np.random.seed(10101)
@@ -160,7 +170,7 @@ def train():
     model.compile(optimizer=Adam(lr=1e-3), loss={'yolo_loss': lambda y_true, y_pred: y_pred})
 
     reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1)
-    checkpoint = ModelCheckpoint('drive/My Drive/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
+    checkpoint = ModelCheckpoint(log_dir+'/ep{epoch:03d}-loss{loss:.3f}-val_loss{val_loss:.3f}.h5',
         monitor='val_loss', save_weights_only=True, save_best_only=True, period=1)
     callback = [reduce_lr, checkpoint]
 
@@ -182,7 +192,7 @@ def train():
                     validation_steps=max(1, num_val//batch_size),
                     epochs=NUM_RPOCH, initial_epoch=0, callbacks = callback)
     finally:
-      model.save_weights(log_dir + 'yolov3_weights_stage_1.h5')
+      model.save_weights(log_dir + '/yolov3_weights_stage_1.h5')
 
 if __name__ == '__main__':
     train()

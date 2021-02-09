@@ -1,8 +1,5 @@
-from google.colab import drive
-drive.mount('/content/drive')
-
 import colorsys
-import os
+import sys, os, cv2
 from timeit import default_timer as timer
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,17 +7,17 @@ from keras import backend as K
 from keras.models import load_model
 from keras.layers import Input
 from PIL import Image, ImageFont, ImageDraw, ImageOps
-import cv2
 from model.model import yolo_eval, yolo_body, tiny_yolo_body
 from model.utils import letterbox_image
-import os
 from keras.utils import multi_gpu_model
+
+YOLO_WEIGHT_PATH = 'weight/yolo.h5'
 
 class YOLO(object):
     _defaults = {
-        "model_path": '/content/drive/My Drive/original_trained_yolov3_model.h5',
+        "model_path": YOLO_WEIGHT_PATH,
         "anchors_path": 'yolo_anchors/yolo_anchors.txt',
-        "classes_path": 'classes_txt/original_classes.txt',
+        "classes_path": 'classes_txt/classes.txt',
         "score" : 0.3,
         "iou" : 0.45,
         "model_image_size" : (416, 416),
@@ -167,6 +164,7 @@ class YOLO(object):
 
     def close_session(self):
         self.sess.close()
+
 
 def detect_img(yolo):
     while True:
