@@ -24,6 +24,16 @@ $ wget https://pjreddie.com/media/files/yolov3.weights
 DARKNET_WEIGHT_PATH = 'yolo.h5' (yolov3_train.py)
 ```
 
+# Set up VOC images dataset and sample train
+```
+1 create VOC anno text file and dataset for sample train
+$ ./setup_voc_anno/voc_setup.sh
+
+2. train
+pyhton3 train.py
+```
+
+
 
 # Data format
 format: ```image_file_path, x_min,y_min,x_max,y_max,class_id```
